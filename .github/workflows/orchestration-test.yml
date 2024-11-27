@@ -37,7 +37,7 @@ jobs:
           # DevOps Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
           # Hard-coded ServiceNow Instance URL for Debugging
-          instance-url: 'https://dev191849.service-now.com/'
+          instance-url: 'https://dev191849.service-now.com'
           # Orchestration Tool ID
           tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
           # GitHub Context
