@@ -9,24 +9,51 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Build
-      run: |
-        echo "Building the application..."
-        sleep 2
-        echo "Build complete!"
+      - name: Build Application
+        run: |
+          echo "Building the application..."
+          sleep 2
+          echo "Build complete!"
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Run Tests
-      run: |
-        echo "Running tests..."
-        sleep 2
-        echo "Tests successful!"
+      - name: Run Tests
+        run: |
+          echo "Running tests..."
+          sleep 2
+          echo "Tests successful!"
+
+      - name: ServiceNow Change Request
+        uses: ServiceNow/servicenow-devops-change@v3.0.0
+        with:
+          # DevOps Integration Token
+          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+          # ServiceNow Instance URL
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          # Orchestration Tool ID
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          # GitHub Context
+          context-github: ${{ toJSON(github) }}
+          # Display Name of the Job
+          job-name: 'ServiceNow DevOps Change'
+          # Change Request Attributes
+          change-request: > 
+            {
+              "attributes": {
+                "requested_by": { "name": "Test User" },
+                "assignment_group": { "name": "Change Approval Team" },
+                "priority": "2",
+                "comments": "Change request triggered during test step of the pipeline.",
+                "work_notes": "Test work notes for the change request.",
+                "start_date": "2023-11-25 11:59:59",
+                "end_date": "2023-11-26 11:59:59"
+              }
+            }
